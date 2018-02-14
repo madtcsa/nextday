@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">NextDayLock</string>
+
+    <string name="picture_img_description">EveryDay Img</string>
+    <string name="music_switch_img_description">Music Switch</string>
+
+    <string name="january_short">JAN</string>
+    <string name="february_short">FEB</string>
+    <string name="march_short">MAR</string>
+    <string name="april_short">APR</string>
+    <string name="may_short">MAY</string>
+    <string name="june_short">JUN</string>
+    <string name="july_short">JUL</string>
+    <string name="august_short">AUG</string>
+    <string name="september_short">SEP</string>
+    <string name="october_short">OCT</string>
+    <string name="november_short">NOV</string>
+    <string name="december_short">DEC</string>
+
+    <string name="comma">，</string>
+</resources>
