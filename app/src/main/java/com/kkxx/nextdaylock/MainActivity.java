@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.OnMed
     @BindView(R.id.author_name)
     TextView authorNameText;
     @BindView(R.id.music_switch_img)
-    ImageView musicSwitchText;
+    ImageView musicSwitchImg;
     @BindView(R.id.next_day_img)
     SimpleDraweeView nextDayImg;
     @BindView(R.id.music_seekbar)
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.OnMed
 
 
     private NextDay currentNextDay;
-    private Handler mHandler = new Handler();
     private MusicPlayer musicPlayer;
 
     @Override
@@ -94,13 +94,16 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.OnMed
     @OnClick(R.id.music_switch_img)
     void playMusic() {
         if (null == musicPlayer) {
+            musicSwitchImg.setImageResource(R.drawable.pause);
             musicPlayer = new MusicPlayer(this);
             musicPlayer.playMusic();
         } else {
             if (musicPlayer.isPlaying()) {
+                musicSwitchImg.setImageResource(R.drawable.play);
                 musicPlayer.pause();
             } else {
                 musicPlayer.continuePlay();
+                musicSwitchImg.setImageResource(R.drawable.pause);
             }
         }
     }
