@@ -7,4 +7,5 @@
     <color name="color_white_85">#D9FFFFFF</color>
     <color name="color_sky_blur_100">#FFDAFFFF</color>
     <color name="color_leak_blue_80">#F20Affff</color>
+    <color name="color_font_shadow_black_100">#FF000000</color>
 </resources>

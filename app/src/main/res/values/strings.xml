@@ -18,4 +18,10 @@
     <string name="december_short">DEC</string>
 
     <string name="comma">,</string>
+
+    <!-- font -->
+    <string name="font_roboto_regular">sans-serif</string>
+    <string name="font_roboto_light">sans-serif-light</string>
+    <string name="font_roboto_condensed">sans-serif-condensed</string>
+    <string name="font_roboto_thin">sans-serif-thin</string>
 </resources>

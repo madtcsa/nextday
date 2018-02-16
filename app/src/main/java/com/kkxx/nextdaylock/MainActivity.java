@@ -2,7 +2,12 @@ package com.kkxx.nextdaylock;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.PaintDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -94,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.OnMed
     @OnClick(R.id.music_switch_img)
     void playMusic() {
         if (null == musicPlayer) {
+            updateSeekBarProgress();
             musicSwitchImg.setImageResource(R.drawable.pause);
             musicPlayer = new MusicPlayer(this);
             musicPlayer.playMusic();
@@ -108,6 +114,12 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.OnMed
         }
     }
 
+    private void updateSeekBarProgress() {
+        LayerDrawable layerDrawable = (LayerDrawable) musicSeekBar.getProgressDrawable();
+        Drawable drawable = layerDrawable.getDrawable(1);
+        drawable.setColorFilter(Color.parseColor(currentNextDay.getBackground()), PorterDuff.Mode.SRC);
+        musicSeekBar.invalidate();
+    }
 
     public NextDay getCurrentNextDay() {
         return currentNextDay;

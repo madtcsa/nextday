@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="date_text_size">60sp</dimen>
+    <dimen name="date_text_size">100sp</dimen>
     <dimen name="month_text_size">20sp</dimen>
-    <dimen name="city_text_size">12sp</dimen>
-    <dimen name="content_text_size">16dp</dimen>
+    <dimen name="city_text_size">10sp</dimen>
+    <dimen name="content_text_size">14sp</dimen>
     <dimen name="root_view_left_right_padding">15dp</dimen>
+    <dimen name="music_title_text_size">12sp</dimen>
+    <dimen name="music_author_text_size">10sp</dimen>
 </resources>

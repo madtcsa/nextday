@@ -20,10 +20,16 @@
         android:id="@+id/date_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@string/font_roboto_thin"
+        android:shadowColor="@color/color_font_shadow_black_100"
+        android:shadowDx="5"
+        android:shadowDy="5"
+        android:shadowRadius="5"
         android:textColor="@color/color_white"
         android:textSize="@dimen/date_text_size"
+        android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,11 +40,16 @@
         android:id="@+id/month_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@string/font_roboto_light"
+        android:shadowColor="@color/color_font_shadow_black_100"
+        android:shadowDx="4.0"
+        android:shadowDy="4.0"
+        android:shadowRadius="4.0"
         android:textColor="@color/color_white"
         android:textSize="@dimen/month_text_size"
+        android:textStyle="normal"
         app:layout_constraintHorizontal_bias="0.03"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/date_text"
         app:layout_constraintTop_toBottomOf="@id/date_text"
         tools:text="FEB. SUNDAY" />
 
@@ -47,8 +58,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:fontFamily="@string/font_roboto_thin"
+        android:padding="2dp"
+        android:shadowColor="@color/color_font_shadow_black_100"
+        android:shadowDx="5"
+        android:shadowDy="5"
+        android:shadowRadius="5"
         android:textColor="@color/color_white_85"
         android:textSize="@dimen/city_text_size"
+        android:textStyle="normal"
+        app:layout_constraintLeft_toLeftOf="@id/date_text"
         app:layout_constraintTop_toBottomOf="@id/month_text"
         tools:text="北京, 中国" />
 
@@ -56,56 +75,92 @@
         android:id="@+id/content_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@string/font_roboto_light"
+        android:padding="1dp"
+        android:includeFontPadding="false"
         android:textColor="@color/color_white"
         android:textSize="@dimen/content_text_size"
+        android:textStyle="normal"
+        app:layout_constraintLeft_toLeftOf="@id/date_text"
         app:layout_constraintTop_toBottomOf="@id/city_text"
         tools:text="当我寂寞的时候，神灵也寂寞，其他人并不知道" />
 
     <ImageView
         android:id="@+id/music_switch_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="35dp"
         android:contentDescription="@string/music_switch_img_description"
         android:src="@drawable/play"
         android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/date_text"
         app:layout_constraintTop_toBottomOf="@id/content_text" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/music_switch_img"
+        app:layout_constraintLeft_toRightOf="@id/music_switch_img"
+        app:layout_constraintTop_toTopOf="@id/music_switch_img">
+
+        <TextView
+            android:id="@+id/music_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@string/font_roboto_light"
+            android:shadowColor="@color/color_font_shadow_black_100"
+            android:shadowDx="4.0"
+            android:shadowDy="4.0"
+            android:shadowRadius="4.0"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/music_title_text_size"
+            android:textStyle="normal"
+            android:visibility="visible"
+            tools:text="This Place Is A Shelter" />
+
+        <TextView
+            android:id="@+id/singer_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@string/font_roboto_thin"
+            android:shadowColor="@color/color_font_shadow_black_100"
+            android:shadowDx="4.0"
+            android:shadowDy="4.0"
+            android:shadowRadius="4.0"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/music_author_text_size"
+            android:textStyle="normal"
+            android:visibility="visible"
+            tools:text="Olafur Arnalds" />
+    </LinearLayout>
 
     <SeekBar
         android:id="@+id/music_seekbar"
+        style="@style/CustomSeekBarStyle"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:max="100"
-        style="@style/CustomSeekBarStyle"
-        app:layout_constraintBottom_toBottomOf="@id/music_switch_img"
-        app:layout_constraintLeft_toRightOf="@id/music_switch_img" />
-
-    <TextView
-        android:id="@+id/music_title_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/color_white"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/singer_text"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
         app:layout_constraintLeft_toRightOf="@id/music_switch_img"
-        tools:text="This Place Is A Shelter" />
-
-    <TextView
-        android:id="@+id/singer_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/color_white"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/music_seekbar"
-        app:layout_constraintLeft_toRightOf="@id/music_switch_img"
-        tools:text="Olafur Arnalds" />
+        app:layout_constraintTop_toBottomOf="@id/music_switch_img" />
 
     <TextView
         android:id="@+id/author_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@string/font_roboto_thin"
         android:textColor="@color/color_white"
+        android:textStyle="normal"
         android:visibility="visible"
+        android:shadowColor="@color/color_font_shadow_black_100"
+        android:shadowDx="4.0"
+        android:shadowDy="4.0"
+        android:shadowRadius="4.0"
         app:layout_constraintBottom_toBottomOf="@id/music_switch_img"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/music_switch_img"
