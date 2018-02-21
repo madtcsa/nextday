@@ -1,28 +1,26 @@
 package com.kkxx.nextdaylock;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.res.ColorStateList;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.PaintDrawable;
-import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.kkxx.nextdaylock.base.BaseFullScreenActivity;
 import com.kkxx.nextdaylock.model.music.MusicPlayer;
 import com.kkxx.nextdaylock.model.nextday.NextDay;
 import com.kkxx.nextdaylock.model.nextday.NextDayViewModel;
@@ -34,7 +32,7 @@ import butterknife.OnClick;
 /**
  * @author chenwei
  */
-public class MainActivity extends AppCompatActivity implements MusicPlayer.OnMediaListener {
+public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.OnMediaListener {
 
     private final String TAG = MainActivity.class.getSimpleName();
 
@@ -58,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.OnMed
     SimpleDraweeView nextDayImg;
     @BindView(R.id.music_seekbar)
     SeekBar musicSeekBar;
+    @BindView(R.id.music_layout)
+    LinearLayout musicLayout;
 
 
     private NextDay currentNextDay;
@@ -66,8 +66,6 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.OnMed
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -93,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.OnMed
         musicArtistText.setText(nextDay.getMusicArtist());
         musicTitleText.setText(nextDay.getMusicTitle());
         authorNameText.setText(nextDay.getName());
+        entranceAnimation();
     }
 
 
@@ -137,5 +136,25 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.OnMed
     @Override
     public void onComplete() {
 
+    }
+
+    public static void startMainActivity(Activity target) {
+        Intent intent = new Intent(target, MainActivity.class);
+        target.startActivity(intent);
+    }
+
+    private void entranceAnimation() {
+        long animationDuration = 500L;
+
+        AnimatorSet set = new AnimatorSet();
+        ObjectAnimator dateTextAnimator = ObjectAnimator.ofFloat(dateText, "translationX", -200F, 0F);
+        ObjectAnimator monthTextAnimator = ObjectAnimator.ofFloat(monthText, "translationX", -200F, 0F);
+        ObjectAnimator cityTextAnimator = ObjectAnimator.ofFloat(cityText, "translationX", -200F, 0F);
+        ObjectAnimator contentTextAnimator = ObjectAnimator.ofFloat(contentText, "translationX", -200F, 0F);
+        ObjectAnimator musicSwitchImgAnimator = ObjectAnimator.ofFloat(musicSwitchImg, "translationX", -200F, 0F);
+        ObjectAnimator musicLayoutAnimator = ObjectAnimator.ofFloat(musicLayout, "translationX", -200F, 0F);
+        set.playTogether(dateTextAnimator, monthTextAnimator, cityTextAnimator, contentTextAnimator, musicSwitchImgAnimator, musicLayoutAnimator);
+        set.setDuration(animationDuration);
+        set.start();
     }
 }
