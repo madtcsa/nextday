@@ -1,5 +1,6 @@
 package com.kkxx.nextdaylock;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -13,9 +14,14 @@ import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -58,7 +64,10 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
     SeekBar musicSeekBar;
     @BindView(R.id.music_layout)
     LinearLayout musicLayout;
-
+    @BindView(R.id.layout_start_page)
+    RelativeLayout startPageLayout;
+    @BindView(R.id.start_up_img)
+    ImageView startImgView;
 
     private NextDay currentNextDay;
     private MusicPlayer musicPlayer;
@@ -68,14 +77,14 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        startPageLayout.setVisibility(View.VISIBLE);
         NextDayViewModel nextDayViewModel = ViewModelProviders.of(this).get(NextDayViewModel.class);
         nextDayViewModel.getNextDayLiveData().observe(this, new Observer<NextDay>() {
             @Override
             public void onChanged(@Nullable NextDay nextDay) {
                 Log.d(TAG, "NextDay: " + nextDay.toString());
                 currentNextDay = nextDay;
-                showNextDay(currentNextDay);
+                startAnimation();
             }
         });
 
@@ -91,7 +100,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
         musicArtistText.setText(nextDay.getMusicArtist());
         musicTitleText.setText(nextDay.getMusicTitle());
         authorNameText.setText(nextDay.getName());
-        entranceAnimation();
+//        entranceAnimation();
     }
 
 
@@ -144,8 +153,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
     }
 
     private void entranceAnimation() {
-        long animationDuration = 500L;
-
+        long animationDuration = 200L;
         AnimatorSet set = new AnimatorSet();
         ObjectAnimator dateTextAnimator = ObjectAnimator.ofFloat(dateText, "translationX", -200F, 0F);
         ObjectAnimator monthTextAnimator = ObjectAnimator.ofFloat(monthText, "translationX", -200F, 0F);
@@ -157,4 +165,38 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
         set.setDuration(animationDuration);
         set.start();
     }
+
+    private void startAnimation(){
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(startImgView, "scaleX", 1F, 1.5F);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(startImgView, "scaleY", 1.0F, 1.5F);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(startPageLayout, "alpha", 1.0F, 0F);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                showNextDay(currentNextDay);
+                startPageLayout.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        animatorSet.playTogether(scaleX, scaleY, alpha);
+        animatorSet.setDuration(1000L);
+        animatorSet.start();
+    }
+
 }
