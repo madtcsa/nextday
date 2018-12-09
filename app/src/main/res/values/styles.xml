@@ -20,4 +20,9 @@
         <item name="android:progressDrawable">@drawable/seekbar_progerss_drawabe</item>
         <item name="android:thumb">@android:color/transparent</item>
     </style>
+
+    <style name="WelcomeStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/app_start_default_bg</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

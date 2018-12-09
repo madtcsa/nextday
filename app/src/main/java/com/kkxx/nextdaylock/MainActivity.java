@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -71,6 +72,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
 
     private NextDay currentNextDay;
     private MusicPlayer musicPlayer;
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +102,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
         musicArtistText.setText(nextDay.getMusicArtist());
         musicTitleText.setText(nextDay.getMusicTitle());
         authorNameText.setText(nextDay.getName());
-//        entranceAnimation();
+        entranceAnimation();
     }
 
 
@@ -153,7 +155,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
     }
 
     private void entranceAnimation() {
-        long animationDuration = 200L;
+        long animationDuration = 500L;
         AnimatorSet set = new AnimatorSet();
         ObjectAnimator dateTextAnimator = ObjectAnimator.ofFloat(dateText, "translationX", -200F, 0F);
         ObjectAnimator monthTextAnimator = ObjectAnimator.ofFloat(monthText, "translationX", -200F, 0F);
@@ -176,11 +178,17 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
             @Override
             public void onAnimationStart(Animator animation) {
 
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getWindow().setBackgroundDrawable(null);
+                        showNextDay(currentNextDay);
+                    }
+                },1000L);
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                showNextDay(currentNextDay);
                 startPageLayout.setVisibility(View.GONE);
             }
 
@@ -195,7 +203,8 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
             }
         });
         animatorSet.playTogether(scaleX, scaleY, alpha);
-        animatorSet.setDuration(1000L);
+        animatorSet.setDuration(1500L);
+        animatorSet.setStartDelay(500L);
         animatorSet.start();
     }
 

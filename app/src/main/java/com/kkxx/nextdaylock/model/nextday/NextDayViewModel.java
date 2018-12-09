@@ -40,11 +40,13 @@ public class NextDayViewModel extends ViewModel {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    NextDay nextDay = NextDayDataParse.getNextDay(response.body().string(), todayDate);
-                    nextDayData.postValue(nextDay);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (null != response.body()) {
+                    try {
+                        NextDay nextDay = NextDayDataParse.getNextDay(response.body().string(), todayDate);
+                        nextDayData.postValue(nextDay);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

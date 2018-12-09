@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/NextDayLock.iml" filepath="$PROJECT_DIR$/NextDayLock.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nextday.iml" filepath="$PROJECT_DIR$/nextday.iml" />
     </modules>
   </component>
 </project>
