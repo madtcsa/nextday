@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.kkxx.nextdaylock.Constants;
+import com.kkxx.nextdaylock.LogUtils;
 import com.kkxx.nextdaylock.NextDayUtils;
 import com.kkxx.nextdaylock.service.NextDayService;
 
@@ -41,6 +42,7 @@ public class NextDayViewModel extends ViewModel {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (null != response.body()) {
+                    LogUtils.logd(response.message());
                     try {
                         NextDay nextDay = NextDayDataParse.getNextDay(response.body().string(), todayDate);
                         nextDayData.postValue(nextDay);
@@ -52,7 +54,7 @@ public class NextDayViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                LogUtils.logw(t.getMessage());
             }
         });
         return nextDayLiveData = nextDayData;

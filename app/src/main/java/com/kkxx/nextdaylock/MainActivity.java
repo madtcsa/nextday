@@ -84,7 +84,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
         nextDayViewModel.getNextDayLiveData().observe(this, new Observer<NextDay>() {
             @Override
             public void onChanged(@Nullable NextDay nextDay) {
-                Log.d(TAG, "NextDay: " + nextDay.toString());
+                LogUtils.logd("NextDay: " + nextDay.toString());
                 currentNextDay = nextDay;
                 startAnimation();
             }
