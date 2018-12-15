@@ -10,6 +10,8 @@ import com.kkxx.nextdaylock.NextDayUtils;
 import com.kkxx.nextdaylock.service.NextDayService;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -25,26 +27,27 @@ import retrofit2.Retrofit;
 public class NextDayViewModel extends ViewModel {
 
     private LiveData<NextDay> nextDayLiveData;
+    private Map<String, LiveData<NextDay>> cacheData = new HashMap<>();
 
-    public LiveData<NextDay> getNextDayLiveData(String targetDate) {
-        if (nextDayLiveData != null) {
-            return nextDayLiveData;
+    public LiveData<NextDay> getNextDayLiveData(final String targetDate) {
+        if (cacheData.containsKey(targetDate)) {
+            return cacheData.get(targetDate);
         }
         final MutableLiveData<NextDay> nextDayData = new MutableLiveData<>();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_THIRD_PARTY_RUL)
                 .build();
         NextDayService service = retrofit.create(NextDayService.class);
-        final String todayDate = targetDate;
-        Call<ResponseBody> call = service.getNextDay(todayDate + ".json");
+        Call<ResponseBody> call = service.getNextDay(targetDate + ".json");
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (null != response.body()) {
                     LogUtils.logd(response.message());
                     try {
-                        NextDay nextDay = NextDayDataParse.getNextDay(response.body().string(), todayDate);
+                        NextDay nextDay = NextDayDataParse.getNextDay(response.body().string(), targetDate);
                         nextDayData.postValue(nextDay);
+                        cacheData.put(targetDate,nextDayData);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

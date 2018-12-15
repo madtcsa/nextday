@@ -75,6 +75,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
     private Handler mHandler = new Handler();
     private NextDayViewModel nextDayViewModel;
     private Gesturelistener gesturelistener;
+    private GestureDetector gestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,12 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
         getTodayData();
 
         gesturelistener = new Gesturelistener();
+        gestureDetector =new GestureDetector(this,gesturelistener);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
     }
 
     private class Gesturelistener implements GestureDetector.OnGestureListener {
@@ -122,9 +129,9 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
             float startX = downEvent.getX();
             float endX = moveEvent.getX();
             if (startX - endX > 50F) {
-                getPreviousData();
-            } else if (startX - endX < -50F) {
                 getNextData();
+            } else if (startX - endX < -50F) {
+                getPreviousData();
             }
             return false;
         }
