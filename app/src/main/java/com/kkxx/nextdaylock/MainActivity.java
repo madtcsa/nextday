@@ -18,6 +18,8 @@ import android.support.annotation.Nullable;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -40,8 +42,6 @@ import butterknife.OnClick;
  * @author chenwei
  */
 public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.OnMediaListener {
-
-    private final String TAG = MainActivity.class.getSimpleName();
 
     @BindView(R.id.date_text)
     TextView dateText;
@@ -73,15 +73,65 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
     private NextDay currentNextDay;
     private MusicPlayer musicPlayer;
     private Handler mHandler = new Handler();
+    private NextDayViewModel nextDayViewModel;
+    private Gesturelistener gesturelistener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        nextDayViewModel = ViewModelProviders.of(this).get(NextDayViewModel.class);
         ButterKnife.bind(this);
         startPageLayout.setVisibility(View.VISIBLE);
-        NextDayViewModel nextDayViewModel = ViewModelProviders.of(this).get(NextDayViewModel.class);
-        nextDayViewModel.getNextDayLiveData().observe(this, new Observer<NextDay>() {
+        getTodayData();
+
+        gesturelistener = new Gesturelistener();
+    }
+
+    private class Gesturelistener implements GestureDetector.OnGestureListener {
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public void onShowPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            return false;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            MotionEvent downEvent = e1;
+            MotionEvent moveEvent = e2;
+            float startX = downEvent.getX();
+            float endX = moveEvent.getX();
+            if (startX - endX > 50F) {
+                getPreviousData();
+            } else if (startX - endX < -50F) {
+                getNextData();
+            }
+            return false;
+        }
+    }
+
+    private void getTodayData() {
+        nextDayViewModel.getNextDayLiveData(NextDayUtils.getTodayDate()).observe(this, new Observer<NextDay>() {
             @Override
             public void onChanged(@Nullable NextDay nextDay) {
                 LogUtils.logd("NextDay: " + nextDay.toString());
@@ -89,7 +139,28 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
                 startAnimation();
             }
         });
+    }
 
+    private void getPreviousData() {
+        nextDayViewModel.getNextDayLiveData(NextDayUtils.getPreviousDate()).observe(this, new Observer<NextDay>() {
+            @Override
+            public void onChanged(@Nullable NextDay nextDay) {
+                LogUtils.logd("NextDay: " + nextDay.toString());
+                currentNextDay = nextDay;
+                showNextDay(currentNextDay);
+            }
+        });
+    }
+
+    private void getNextData() {
+        nextDayViewModel.getNextDayLiveData(NextDayUtils.getNextDate()).observe(this, new Observer<NextDay>() {
+            @Override
+            public void onChanged(@Nullable NextDay nextDay) {
+                LogUtils.logd("NextDay: " + nextDay.toString());
+                currentNextDay = nextDay;
+                showNextDay(currentNextDay);
+            }
+        });
     }
 
     private void showNextDay(NextDay nextDay) {
@@ -168,7 +239,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
         set.start();
     }
 
-    private void startAnimation(){
+    private void startAnimation() {
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(startImgView, "scaleX", 1F, 1.5F);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(startImgView, "scaleY", 1.0F, 1.5F);
         ObjectAnimator alpha = ObjectAnimator.ofFloat(startPageLayout, "alpha", 1.0F, 0F);
@@ -184,7 +255,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
                         getWindow().setBackgroundDrawable(null);
                         showNextDay(currentNextDay);
                     }
-                },1000L);
+                }, 1000L);
             }
 
             @Override

@@ -10,9 +10,23 @@ import java.util.Calendar;
 public class NextDayUtils {
     private static long currentDay = System.currentTimeMillis();
     private static Calendar calendar = Calendar.getInstance();
+    private static final long ONE_DAY = 24 * 60 * 60 * 1000L;
+
+    private static int currentIndex = 0;
 
     public static String getTodayDate() {
+        currentIndex = 0;
         currentDay = System.currentTimeMillis();
+        return getDate();
+    }
+
+    public static String getPreviousDate() {
+        currentDay = System.currentTimeMillis() + (--currentIndex) * ONE_DAY;
+        return getDate();
+    }
+
+    public static String getNextDate() {
+        currentDay = System.currentTimeMillis() + (++currentIndex) * ONE_DAY;
         return getDate();
     }
 

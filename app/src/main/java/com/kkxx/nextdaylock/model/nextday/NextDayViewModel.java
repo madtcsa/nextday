@@ -24,10 +24,9 @@ import retrofit2.Retrofit;
 
 public class NextDayViewModel extends ViewModel {
 
-    private final String TAG = "NextDaaViewModel";
     private LiveData<NextDay> nextDayLiveData;
 
-    public LiveData<NextDay> getNextDayLiveData() {
+    public LiveData<NextDay> getNextDayLiveData(String targetDate) {
         if (nextDayLiveData != null) {
             return nextDayLiveData;
         }
@@ -36,7 +35,7 @@ public class NextDayViewModel extends ViewModel {
                 .baseUrl(Constants.BASE_THIRD_PARTY_RUL)
                 .build();
         NextDayService service = retrofit.create(NextDayService.class);
-        final String todayDate = NextDayUtils.getTodayDate();
+        final String todayDate = targetDate;
         Call<ResponseBody> call = service.getNextDay(todayDate + ".json");
         call.enqueue(new Callback<ResponseBody>() {
             @Override
