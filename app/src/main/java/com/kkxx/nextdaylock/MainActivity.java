@@ -15,13 +15,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -74,7 +70,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
     private MusicPlayer musicPlayer;
     private Handler mHandler = new Handler();
     private NextDayViewModel nextDayViewModel;
-    private Gesturelistener gesturelistener;
+    private GestureListener gesturelistener;
     private GestureDetector gestureDetector;
 
     @Override
@@ -86,7 +82,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
         startPageLayout.setVisibility(View.VISIBLE);
         getTodayData();
 
-        gesturelistener = new Gesturelistener();
+        gesturelistener = new GestureListener();
         gestureDetector =new GestureDetector(this,gesturelistener);
     }
 
@@ -95,7 +91,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
         return gestureDetector.onTouchEvent(event);
     }
 
-    private class Gesturelistener implements GestureDetector.OnGestureListener {
+    private class GestureListener implements GestureDetector.OnGestureListener {
 
         @Override
         public boolean onDown(MotionEvent e) {
