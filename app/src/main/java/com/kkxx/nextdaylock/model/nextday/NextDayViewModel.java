@@ -3,7 +3,6 @@ package com.kkxx.nextdaylock.model.nextday;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.util.Log;
 
 import com.kkxx.nextdaylock.Constants;
 import com.kkxx.nextdaylock.LogUtils;
@@ -43,8 +42,6 @@ public class NextDayViewModel extends ViewModel {
             NextDay nextDay = NextDayUtils.cacheJsonToNextDay(cacheJson);
             nextDayData.postValue(nextDay);
             cacheData.put(targetDate, nextDayData);
-            Log.d("NextDayViewModel", "----Cache hit--- " + cacheJson);
-            Log.d("NextDayViewModel", "---cache nextDay--- " + nextDay.toString());
         } else {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(Constants.BASE_THIRD_PARTY_RUL)
@@ -57,10 +54,8 @@ public class NextDayViewModel extends ViewModel {
                     if (null != response.body()) {
                         LogUtils.logd(response.message());
                         try {
-                            Log.d("NextDayViewModel", "---target date-- " + targetDate);
                             String result = response.body().string();
                             NextDay nextDay = NextDayDataParse.getNextDay(result, targetDate);
-                            Log.d("NextDayViewModel", "---result--- " + result);
                             nextDayData.postValue(nextDay);
                             cacheData.put(targetDate, nextDayData);
                             sp.saveTargetDateJson(targetDate, NextDayUtils.nextDayToJson(nextDay));
