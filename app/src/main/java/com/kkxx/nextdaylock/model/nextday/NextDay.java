@@ -1,5 +1,7 @@
 package com.kkxx.nextdaylock.model.nextday;
 
+import com.google.gson.Gson;
+
 /**
  * @author chenwei
  * @date 2018/2/12
@@ -123,4 +125,5 @@ public class NextDay {
                 ", pictureImg='" + pictureImg + '\'' +
                 '}';
     }
+
 }

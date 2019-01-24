@@ -1,5 +1,10 @@
 package com.kkxx.nextdaylock.model.nextday;
 
+import android.content.Context;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.WindowManager;
+
 import com.kkxx.nextdaylock.Constants;
 import com.kkxx.nextdaylock.NextDayApplication;
 import com.kkxx.nextdaylock.NextDayUtils;
@@ -16,6 +21,7 @@ import org.json.JSONObject;
 public class NextDayDataParse {
 
     private final String TAG = NextDayDataParse.class.getSimpleName();
+    private static String SCREEN_IMG_SIZE = "";
 
     public static NextDay getNextDay(String jsonString, String requestDate) {
         NextDay nextDay = new NextDay();
@@ -37,7 +43,7 @@ public class NextDayDataParse {
             nextDay.setMusicArtist(minSubject.optString("artist"));
             nextDay.setMusicTitle(minSubject.optString("title"));
             nextDay.setMusicUrl(minSubject.optString("url").replace("{music}", Constants.BASE_MUSIC_URL));
-            nextDay.setPictureImg(subObject.optJSONObject("images").optString("big568h3x").replace("{img}", Constants.BASE_IMG_URL));
+            nextDay.setPictureImg(subObject.optJSONObject("images").optString(getImgStrKey()).replace("{img}", Constants.BASE_IMG_URL));
             String fullDateString = subObject.optString("dateKey");
             nextDay.setMonth(getShortMonthName(fullDateString.substring(4, 6)));
             nextDay.setDate(fullDateString.substring(6));
@@ -46,6 +52,21 @@ public class NextDayDataParse {
             e.printStackTrace();
         }
         return nextDay;
+    }
+
+    private static String getImgStrKey() {
+        if ("".equals(SCREEN_IMG_SIZE)) {
+            DisplayMetrics dm = new DisplayMetrics();
+            WindowManager wmManager = (WindowManager) NextDayApplication.appContext.getSystemService(Context.WINDOW_SERVICE);
+            wmManager.getDefaultDisplay().getMetrics(dm);
+            int dpi = dm.densityDpi;
+            if (dpi >= DisplayMetrics.DENSITY_XXXHIGH) {
+                SCREEN_IMG_SIZE = "big568h3x";
+            } else {
+                SCREEN_IMG_SIZE = "big568h2x";
+            }
+        }
+        return SCREEN_IMG_SIZE;
     }
 
     private static String getShortMonthName(String month) {

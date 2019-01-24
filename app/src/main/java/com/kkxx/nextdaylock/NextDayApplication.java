@@ -1,9 +1,9 @@
 package com.kkxx.nextdaylock;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.res.Resources;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 
 /**
  * @author chenwei
@@ -13,11 +13,12 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 public class NextDayApplication extends Application {
 
     public static Resources RESOURCE;
+    public static Context appContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
         RESOURCE = getResources();
-        Fresco.initialize(this);
+        appContext = this;
     }
 }

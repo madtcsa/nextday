@@ -7,7 +7,7 @@
     tools:background="@drawable/simple_bg"
     tools:context="com.kkxx.nextdaylock.MainActivity">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <ImageView
         android:id="@+id/next_day_img"
         android:layout_width="0dp"
         android:layout_height="0dp"

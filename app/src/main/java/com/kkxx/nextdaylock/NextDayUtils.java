@@ -1,5 +1,8 @@
 package com.kkxx.nextdaylock;
 
+import com.google.gson.Gson;
+import com.kkxx.nextdaylock.model.nextday.NextDay;
+
 import java.util.Calendar;
 
 /**
@@ -56,5 +59,15 @@ public class NextDayUtils {
 
     public static int getWeek() {
         return calendar.get(Calendar.DAY_OF_WEEK);
+    }
+
+    public static String nextDayToJson(NextDay nextDay) {
+        Gson gson = new Gson();
+        return gson.toJson(nextDay);
+    }
+
+    public static NextDay cacheJsonToNextDay(String cache) {
+        Gson gson = new Gson();
+        return gson.fromJson(cache, NextDay.class);
     }
 }

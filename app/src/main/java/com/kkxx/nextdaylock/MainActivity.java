@@ -15,20 +15,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.kkxx.nextdaylock.base.BaseFullScreenActivity;
 import com.kkxx.nextdaylock.model.music.MusicPlayer;
 import com.kkxx.nextdaylock.model.nextday.NextDay;
@@ -41,7 +39,7 @@ import butterknife.OnClick;
 /**
  * @author chenwei
  */
-public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.OnMediaListener {
+public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.OnMediaListener, GestureDetector.OnGestureListener {
 
     @BindView(R.id.date_text)
     TextView dateText;
@@ -60,7 +58,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
     @BindView(R.id.music_switch_img)
     ImageView musicSwitchImg;
     @BindView(R.id.next_day_img)
-    SimpleDraweeView nextDayImg;
+    ImageView nextDayImg;
     @BindView(R.id.music_seekbar)
     SeekBar musicSeekBar;
     @BindView(R.id.music_layout)
@@ -74,7 +72,6 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
     private MusicPlayer musicPlayer;
     private Handler mHandler = new Handler();
     private NextDayViewModel nextDayViewModel;
-    private Gesturelistener gesturelistener;
     private GestureDetector gestureDetector;
 
     @Override
@@ -85,9 +82,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
         ButterKnife.bind(this);
         startPageLayout.setVisibility(View.VISIBLE);
         getTodayData();
-
-        gesturelistener = new Gesturelistener();
-        gestureDetector =new GestureDetector(this,gesturelistener);
+        gestureDetector = new GestureDetector(this, this);
     }
 
     @Override
@@ -95,46 +90,44 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
         return gestureDetector.onTouchEvent(event);
     }
 
-    private class Gesturelistener implements GestureDetector.OnGestureListener {
 
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return false;
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        MotionEvent downEvent = e1;
+        MotionEvent moveEvent = e2;
+        float startX = downEvent.getX();
+        float endX = moveEvent.getX();
+        if (startX - endX > 50F) {
+            getNextData();
+        } else if (startX - endX < -50F) {
+            getPreviousData();
         }
-
-        @Override
-        public void onShowPress(MotionEvent e) {
-
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            return false;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e) {
-
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            MotionEvent downEvent = e1;
-            MotionEvent moveEvent = e2;
-            float startX = downEvent.getX();
-            float endX = moveEvent.getX();
-            if (startX - endX > 50F) {
-                getNextData();
-            } else if (startX - endX < -50F) {
-                getPreviousData();
-            }
-            return false;
-        }
+        return false;
     }
 
     private void getTodayData() {
@@ -171,7 +164,8 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
     }
 
     private void showNextDay(NextDay nextDay) {
-        nextDayImg.setImageURI(Uri.parse(nextDay.getPictureImg()));
+        Glide.with(this).asBitmap().load(Uri.parse(nextDay.getPictureImg()))
+                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)).into(nextDayImg);
         dateText.setText(nextDay.getDate());
         monthText.setText(nextDay.getMonth() + NextDayApplication.RESOURCE.getString(R.string.comma) + nextDay.getWeek());
         cityText.setText(nextDay.getCity());
