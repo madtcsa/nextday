@@ -77,12 +77,21 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hideSystemUi();
         setContentView(R.layout.activity_main);
         nextDayViewModel = ViewModelProviders.of(this).get(NextDayViewModel.class);
         ButterKnife.bind(this);
         startPageLayout.setVisibility(View.VISIBLE);
         getTodayData();
         gestureDetector = new GestureDetector(this, this);
+    }
+
+    private void hideSystemUi() {
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
     }
 
     @Override
@@ -194,6 +203,7 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
                 musicSwitchImg.setImageResource(R.drawable.pause);
             }
         }
+        hideSystemUi();
     }
 
     private void updateSeekBarProgress() {
