@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "327479300516",
+    "firebase_url": "https://opensource-a9992.firebaseio.com",
+    "project_id": "opensource-a9992",
+    "storage_bucket": "opensource-a9992.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327479300516:android:9ad72871de1d2bf3",
+        "android_client_info": {
+          "package_name": "com.kkxx.nextdaylock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327479300516-62iukkjsrs2f1it38snp93bs3pc28k9l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTlHEE7HKQDEUysGzAGd6zcWtKZjLLE0w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

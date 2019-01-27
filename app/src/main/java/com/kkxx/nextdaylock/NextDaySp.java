@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.kkxx.nextdaylock.base.BaseSp;
 
-import java.util.zip.Deflater;
-
 /**
  * @author kkxx
  * @date 2019/1/24
