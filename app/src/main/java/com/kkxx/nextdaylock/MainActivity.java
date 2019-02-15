@@ -84,6 +84,21 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
         startPageLayout.setVisibility(View.VISIBLE);
         getTodayData();
         gestureDetector = new GestureDetector(this, this);
+        musicSeekBar.setClickable(false);
+        musicSeekBar.setEnabled(false);
+        musicSeekBar.setSelected(false);
+        musicSeekBar.setFocusable(false);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (null != musicPlayer) {
+            if (musicPlayer.isPlaying()) {
+                musicSwitchImg.setImageResource(R.drawable.play);
+                musicPlayer.pause();
+            }
+        }
     }
 
     private void hideSystemUi() {
@@ -184,8 +199,13 @@ public class MainActivity extends BaseFullScreenActivity implements MusicPlayer.
         musicTitleText.setText(nextDay.getMusicTitle());
         authorNameText.setText(nextDay.getName());
         entranceAnimation();
+        if (null != musicPlayer) {
+            musicPlayer.stop();
+            musicSeekBar.setProgress(0);
+            updateSeekBarProgress();
+            musicSwitchImg.setImageResource(R.drawable.play);
+        }
     }
-
 
     @OnClick(R.id.music_switch_img)
     void playMusic() {

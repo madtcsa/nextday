@@ -60,11 +60,7 @@ public class NextDayDataParse {
             WindowManager wmManager = (WindowManager) NextDayApplication.appContext.getSystemService(Context.WINDOW_SERVICE);
             wmManager.getDefaultDisplay().getMetrics(dm);
             int dpi = dm.densityDpi;
-            if (dpi >= DisplayMetrics.DENSITY_XHIGH) {
-                SCREEN_IMG_SIZE = "big568h3x";
-            } else {
-                SCREEN_IMG_SIZE = "big568h2x";
-            }
+            SCREEN_IMG_SIZE = "big568h3x";
         }
         return SCREEN_IMG_SIZE;
     }

@@ -3,7 +3,9 @@ package com.kkxx.nextdaylock.model.nextday;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
+import com.kkxx.nextdaylock.BuildConfig;
 import com.kkxx.nextdaylock.Constants;
 import com.kkxx.nextdaylock.LogUtils;
 import com.kkxx.nextdaylock.NextDayApplication;
@@ -56,6 +58,9 @@ public class NextDayViewModel extends ViewModel {
                         try {
                             String result = response.body().string();
                             NextDay nextDay = NextDayDataParse.getNextDay(result, targetDate);
+                            if(BuildConfig.DEBUG){
+                                Log.d("NextDayViewModel", "NextDay Info: "+nextDay.toString());
+                            }
                             nextDayData.postValue(nextDay);
                             cacheData.put(targetDate, nextDayData);
                             sp.saveTargetDateJson(targetDate, NextDayUtils.nextDayToJson(nextDay));

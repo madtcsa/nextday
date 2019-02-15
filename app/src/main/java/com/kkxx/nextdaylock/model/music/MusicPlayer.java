@@ -37,11 +37,11 @@ public class MusicPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
         mediaPlayer.setOnPreparedListener(this);
         mediaPlayer.setOnSeekCompleteListener(this);
         mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.setLooping(true);
         setTimer();
     }
 
     public void playMusic() {
-
         try {
             mediaPlayer.setDataSource(activity, Uri.parse(activity.getCurrentNextDay().getMusicUrl()));
         } catch (IOException e) {
@@ -92,7 +92,6 @@ public class MusicPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
         mediaPlayer.seekTo(curPosition + MOVE_TIME);
     }
 
-
     public void previous() {
         int curPosition = mediaPlayer.getCurrentPosition();
         if ((curPosition - MOVE_TIME) < 0) {
@@ -126,6 +125,11 @@ public class MusicPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
     @Override
     public void onSeekComplete(MediaPlayer mp) {
 
+    }
+
+    public void stop(){
+        mediaPlayer.stop();
+        mediaPlayer.reset();
     }
 
     @Override
